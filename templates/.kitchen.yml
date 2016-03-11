@@ -1,0 +1,69 @@
+<% require 'kitchen/config' %>
+<% config = Kitchen::Config %>
+<% aws_access_key = ENV['AWS_ACCESS_KEY'] %>
+<% aws_secret_key = ENV['AWS_SECRET_KEY'] %>
+<% user = "#{`git config --get user.name`.chomp} <#{`git config --get user.email`.chomp}>" %>
+---
+settings:
+  parallel: true
+
+driver:
+  name: ec2
+  require_chef_omnibus: <%= config.chef_version %>
+  aws_access_key_id: <%= aws_access_key %>
+  aws_secret_access_key: <%= aws_secret_key %>
+  aws_ssh_key_id: <%= config.key_id %>
+  ssh_key: <%= ENV['HOME'] %>/.ssh/<%= config.key_id %>.pem
+  flavor_id: '<%= config.tester_flavor_id %>'
+  region: '<%= config.region %>'
+  availability_zone: '<%= config.availability_zone %>'
+  security_group_ids: <%= config.security_group_ids %>
+  username: '<%= config.username %>'
+  subnet_id: '<%= config.subnet_id %>'
+  iam_profile_name: '<%= config.iam_profile_name%>'
+<%= config.tags("COOKBOOK_NAME", user, 'Linux') %>
+
+driver_config:
+    name: ec2
+    associate_public_ip: false
+
+provisioner:
+  name: chef_zero
+  attributes:
+    chef_client:
+      config:
+        ssl_verify_mode: ":verify_peer"
+
+platforms:
+  - name: rhel6
+    driver:
+      name: ec2
+      image_id: <%= config.bare_ami %>
+  - name: rhel7
+    driver:
+      name: ec2
+      image_id: <%= config.rhel7_ami %>
+  - name: amazon
+    driver:
+      name: ec2
+      image_id: <%= config.amazon_ami %>
+
+suites:
+  - name: default
+    # use these if you require encrypted data bags:  Setup a submodule:
+    # %> git submodule add ssh://git@server/devops_cookbooks/chef_repo.git
+    # then uncoment the below lines:
+    # data_bags_path: "chef_repo/test/data_bags"
+    # encrypted_data_bag_secret_key_path: "chef_repo/test/secret"
+    # to remove the submodule:
+    # %> git submodule deinit -f chef_repo
+    # %> git rm chef_repo
+    # %> rm -rf .git/modules/chef_repo
+    run_list:
+      # use this if you are building an application cookbook, and comment out
+      # the recipe.  Make sure you add roles/COOKBOOK_NAME.json, and the
+      # attribute: default['application'] = 'COOKBOOK_NAME' to
+      # attributes/default.rb too.
+      # - role[COOKBOOK_NAME]
+      - recipe[COOKBOOK_NAME::default]
+    attributes:

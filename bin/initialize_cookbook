@@ -1,0 +1,128 @@
+#!/usr/bin/env ruby
+require 'term/ansicolor'
+include Term::ANSIColor
+
+require 'kitchen/config'
+
+config = Kitchen::Config
+
+@NO_ERRS = true
+##
+## wrap some stuff around printing in colors
+##
+def gputs(*stuff)
+  print green, bold, line_join(stuff), reset
+end
+
+def rputs(*stuff)
+  print red, bold, line_join(stuff), reset
+end
+
+def yputs(*stuff)
+  print yellow, '  - ' + line_join(stuff), reset
+end
+
+def line_join(*stuff)
+  stuff.join("\n") + "\n"
+end
+
+def run_cmd(cmd)
+  yputs cmd
+  @NO_ERRS = system(cmd) && @NO_ERRS
+end
+
+def usage
+  "Usage: initialize_cookbook <cookbook_name>
+    used to initialize a base cookbook with all the necessary development tools
+    all ready to go.  <cookbook_name> is required.
+    "
+end
+
+def exit_usage
+  puts(usage)
+  exit
+end
+
+def exit_version
+  puts 'Kitchen::Config / initialize_cookbook v' + Kitchen::Config::VERSION
+  exit
+end
+
+##
+## BEGIN
+##
+name      = ARGV.shift
+copy_path = File.expand_path(File.dirname(__FILE__)).gsub('/bin', '/templates')
+int_path  = 'test/integration/default/serverspec'
+files     = {
+  'Gemfile'                     => 'Gemfile',
+  'Guardfile'                   => 'Guardfile',
+  '.kitchen.yml'                => '.kitchen.yml',
+  '.rspec'                      => '.rspec',
+  'spec_helper.rb'              => 'spec/spec_helper.rb',
+  'integration_spec_helper.rb'  => "#{int_path}/spec_helper.rb",
+  'default_spec.rb'             => 'spec/recipes/default_spec.rb',
+  'integration_default_spec.rb' => "#{int_path}/localhost/default_spec.rb",
+  '.gitignore'                  => '.gitignore',
+  'Berksfile'                   => 'Berksfile',
+  'metadata.rb'                 => 'metadata.rb',
+  'Rakefile'                    => 'Rakefile',
+  'Gemfile.serverspec'          => "#{int_path}/Gemfile"
+}
+
+dirs = %w(
+  test
+  test/integration
+  test/integration/default
+  test/integration/default/serverspec
+  test/integration/default/serverspec/localhost
+  spec
+  spec/attributes
+  spec/libraries
+  spec/providers
+  spec/recipes
+  spec/resources
+  spec/templates
+)
+
+##
+## start our run
+##
+
+puts exit_usage if name.nil? or name == '' or name == '--help' or name == '-h'
+puts exit_version if name == '--version' or name == '-v'
+puts exit_usage unless name =~ /^[a-z_0-9]*$/
+
+gputs "Initializing cookbook #{name}"
+cmd = "berks cookbook #{name} --skip-vagrant"
+run_cmd cmd
+
+gputs "creating directory structure under #{name}"
+dirs.each do |dir|
+  new_dir = "#{name}/#{dir}"
+  cmd = "mkdir #{new_dir}"
+  yputs cmd
+  if File.directory? "#{new_dir}"
+    yputs "Directory #{new_dir} already exists... skipping."
+  else
+    Dir.mkdir "#{new_dir}"
+  end
+end
+
+gputs "creating base files in #{name}"
+files.each do |k, v|
+  yputs "creating #{copy_path}/#{k} #{name}/#{v}"
+  content = File.read("#{copy_path}/#{k}").gsub('COOKBOOK_NAME', name)
+  @NO_ERRS = File.open("#{name}/#{v}", 'w') { |f| f.write(content) } and @NO_ERRS
+end
+
+gputs 'Running bundler'
+cmd = "cd #{name} && bundle install"
+run_cmd cmd
+
+## finish up
+if @NO_ERRS
+  gputs 'Build Successful'
+else
+  rputs 'There were build problems.  Please read scroll.'
+end

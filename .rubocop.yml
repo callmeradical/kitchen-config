@@ -1,0 +1,7 @@
+# LineLength can be greater than 80 characters
+Metrics/LineLength:
+  Enabled: false
+
+AllCops:
+  Exclude:
+    - 'chef_repo/**/*'
