@@ -1,9 +1,7 @@
 require 'rspec'
-require 'simplecov'
-require 'simplecov-rcov'
 require 'yaml'
-SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
-SimpleCov.start
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
 
 Dir['./lib/**/*.rb'].reverse_each { |file| require file }
 
