@@ -19,7 +19,7 @@ RSpec.describe Kitchen::Config do
   end
 
   describe '#tags' do
-    let(:method) { subj.tags(cb_name, user, os) }
+    let(:method) { subj.tags(cb_name, user) }
     it { expect(subj).to respond_to(:tags) }
     it { expect(method).to match /Name: \"Chef Tester\"/ }
     it { expect(method).to match /Apps: \"#{cb_name} cookbook test\"/ }

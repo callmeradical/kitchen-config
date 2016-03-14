@@ -4,9 +4,7 @@ include Term::ANSIColor
 
 require 'kitchen/config'
 
-config = Kitchen::Config
-
-@NO_ERRS = true
+@noErrs = true
 ##
 ## wrap some stuff around printing in colors
 ##
@@ -28,7 +26,7 @@ end
 
 def run_cmd(cmd)
   yputs cmd
-  @NO_ERRS = system(cmd) && @NO_ERRS
+  @noErrs = system(cmd) && @noErrs
 end
 
 def usage
@@ -89,8 +87,8 @@ dirs = %w(
 ## start our run
 ##
 
-puts exit_usage if name.nil? or name == '' or name == '--help' or name == '-h'
-puts exit_version if name == '--version' or name == '-v'
+puts exit_usage if name.nil? || name == '' || name == '--help' || name == '-h'
+puts exit_version if name == '--version' || name == '-v'
 puts exit_usage unless name =~ /^[a-z_0-9]*$/
 
 gputs "Initializing cookbook #{name}"
@@ -105,7 +103,7 @@ dirs.each do |dir|
   if File.directory? "#{new_dir}"
     yputs "Directory #{new_dir} already exists... skipping."
   else
-    Dir.mkdir "#{new_dir}"
+    Dir.mkdir new_dir.to_s
   end
 end
 
@@ -113,7 +111,7 @@ gputs "creating base files in #{name}"
 files.each do |k, v|
   yputs "creating #{copy_path}/#{k} #{name}/#{v}"
   content = File.read("#{copy_path}/#{k}").gsub('COOKBOOK_NAME', name)
-  @NO_ERRS = File.open("#{name}/#{v}", 'w') { |f| f.write(content) } and @NO_ERRS
+  @noErrs = File.open("#{name}/#{v}", 'w') { |f| f.write(content) } && @noErrs
 end
 
 gputs 'Running bundler'
@@ -121,7 +119,7 @@ cmd = "cd #{name} && bundle install"
 run_cmd cmd
 
 ## finish up
-if @NO_ERRS
+if @noErrs
   gputs 'Build Successful'
 else
   rputs 'There were build problems.  Please read scroll.'

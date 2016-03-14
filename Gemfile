@@ -12,5 +12,4 @@ group :test, :development do
   gem 'rspec', require: false
   gem 'rspec-core', require: false
   gem 'codeclimate-test-reporter', require: false
-
 end

@@ -21,7 +21,7 @@ driver:
   username: '<%= config.username %>'
   subnet_id: '<%= config.subnet_id %>'
   iam_profile_name: '<%= config.iam_profile_name%>'
-<%= config.tags("COOKBOOK_NAME", user, 'Linux') %>
+<%= config.tags("COOKBOOK_NAME", user) %>
 
 driver_config:
     name: ec2

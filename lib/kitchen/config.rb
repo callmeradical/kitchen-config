@@ -11,7 +11,7 @@ module Kitchen
       if @config.keys.include?(method_sym)
         @config[method_sym]
       else
-        fail 'Undefined method or variable, '\
+        raise 'Undefined method or variable, '\
               "received #{method_sym}, availabile #{@config.keys}"
       end
     end
@@ -26,7 +26,7 @@ module Kitchen
       @config.keys.include?(method_sym) ? true : super
     end
 
-    def self.tags(cb_name, user, os)
+    def self.tags(cb_name, user)
       "  tags:\n" \
       "    Name: \"Chef Tester\"\n" \
       "    Apps: \"#{cb_name} cookbook test\"\n" \
