@@ -3,12 +3,15 @@ require 'kitchen/config/version'
 
 module Kitchen
   module Config
-    Config_path = File.expand_path(File.dirname(__FILE__))
-
     require 'yaml'
-    @config = YAML.load_file("#{Config_path}/config.yml")
+
+    @config = nil
 
     def self.method_missing(method_sym, *_arguments, &_block)
+      if @config.nil?
+        self.load_config(ENV['KITCHEN_CONFIG'])
+      end
+
       if @config.keys.include?(method_sym)
         @config[method_sym]
       else
@@ -17,10 +20,14 @@ module Kitchen
       end
     end
 
-    def self.security_group_ids_yml
-      Kernel.warn('[DEPRECATION] security_group_ids_yml, '\
-                 'has been deprecated, calling security_group_ids')
-      security_group_ids
+    def self.load_config(file)
+      begin
+        @config_path = File.expand_path(File.dirname(file))
+      rescue ArguementError => e
+        puts "You provided #{ENV['KITCHEN_CONFIG']}"
+        raise 'Please define valid KITCHEN_CONFIG in your shell.'
+      end
+      @config = YAML.load_file("#{@config_path}/config.yml")
     end
 
     def self.respond_to?(method_sym, include_private = false)
