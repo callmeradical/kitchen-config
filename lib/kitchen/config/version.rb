@@ -1,5 +1,5 @@
 module Kitchen
   module Config
-    VERSION = '0.1.1'.freeze
+    VERSION = '0.1.1'
   end
 end

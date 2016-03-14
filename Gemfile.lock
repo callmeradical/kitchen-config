@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    kitchen-config (0.1.0)
+    kitchen-config (0.1.1)
       term-ansicolor
 
 GEM
