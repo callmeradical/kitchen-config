@@ -1,7 +1,15 @@
 language: ruby
 rvm:
-  - 2.2.0
-  - 2.1.0
+- 2.2.0
+- 2.1.0
 addons:
-    code_climate:
-        repo_token: 51b75c40638d400d9a0a96c199f6675c3149cecf164b7922a8fa835e7c6
+  code_climate:
+    repo_token: 51b75c40638d400d9a0a96c199f6675c3149cecf164b7922a8fa835e7c6
+deploy:
+  provider: rubygems
+  api_key:
+    secure: ZeT0xb/y1DkU/t68HCmTH0mzvMO0cE+8/UloDIEzhh+PmKX/MTtSvddBGuaTWRG7w9aTUCu1RwfQJlwvoLPcQAJLitfUL05Kc8lEnxuTTUDYrOaEMOJbKK+hzqpYJz/1xK97BN1X+GUa4YiHSJOX9xk7CHJTEZqusQ56ynOiYU5nRCJhKpY9UW4UhmSOM3y8xfRvXbKnOtGBzTKeFTfvYSOwHygk+Rp/TDwlccfXdPoh2ITP1hoQqvDR1xhtwWw+kycvy9pLOm0ccQV07mpsZ4bxhSJxnjQD8eTqOCG+9v/qzjlBRiZzwlCNS8NNGnP/0K4xMePC/WgX8UFfdBgmwTmBYZoww8XGSYMJw+bjsmAH+PxyXaTeEC/J2inFt83wtvlldgyHNwSh/BpAwdxN9WeO+K64StoBQm6bnmLYMrliKhzp6LlS00+YRFzigtjlNZMUwo/Q4fLHhBsU7OhQlEddesRHcvHiqXNSE0hl8x533hZKgtR7TzQ51XFgo6RuNKhYcQgWAtuDjNgazHdfwYjD2WqI2vqbknr73aAD3NYxfFfCKmbF1R8UDzKzZpqCmKGOYxnd+cHenOzLG6wlWUj1nsBus60H7Y9MEYaXkyRRNZKtAM8mAwhIzXfvGd8aSPvAFexPs0PkuxtURlVWcRlhX1M/Z5IuZXzVlMYXDQo=
+  gem: kitchen-config
+  on:
+    tags: true
+    repo: callmeradical/kitchen-config
