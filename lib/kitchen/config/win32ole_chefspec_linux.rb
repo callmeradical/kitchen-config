@@ -7,10 +7,23 @@
 
 # btw... this is a stunning show of hacknery.
 module WIN32OLE
-  module Stuby; def self.ExecQuery(args); WIN32OLE::Eachy; end; end;
-  module Eachy; def self.each; []; end; end;
+  #This just accepts everything.
+  module Stuby
+    def self.ExecQuery(_args)
+      WIN32OLE::Eachy
+    end
+  end
+  
+  # Iterative.
+  module Eachy
+    def self.each
+      []
+    end
+  end
 
-  def self.connect(args); WIN32OLE::Stuby; end;
+  def self.connect(_args)
+    WIN32OLE::Stuby
+  end
 end
 
 module Win32

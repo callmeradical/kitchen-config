@@ -4,7 +4,7 @@ include Term::ANSIColor
 
 require 'kitchen/config'
 
-@noErrs = true
+@no_errs = true
 ##
 ## wrap some stuff around printing in colors
 ##
@@ -26,7 +26,7 @@ end
 
 def run_cmd(cmd)
   yputs cmd
-  @noErrs = system(cmd) && @noErrs
+  @no_errs = system(cmd) && @no_errs
 end
 
 def usage
@@ -100,7 +100,7 @@ dirs.each do |dir|
   new_dir = "#{name}/#{dir}"
   cmd = "mkdir #{new_dir}"
   yputs cmd
-  if File.directory? "#{new_dir}"
+  if File.directory? new_dir.to_s
     yputs "Directory #{new_dir} already exists... skipping."
   else
     Dir.mkdir new_dir.to_s
@@ -111,7 +111,7 @@ gputs "creating base files in #{name}"
 files.each do |k, v|
   yputs "creating #{copy_path}/#{k} #{name}/#{v}"
   content = File.read("#{copy_path}/#{k}").gsub('COOKBOOK_NAME', name)
-  @noErrs = File.open("#{name}/#{v}", 'w') { |f| f.write(content) } && @noErrs
+  @no_errs = File.open("#{name}/#{v}", 'w') { |f| f.write(content) } && @no_errs
 end
 
 gputs 'Running bundler'
@@ -119,7 +119,7 @@ cmd = "cd #{name} && bundle install"
 run_cmd cmd
 
 ## finish up
-if @noErrs
+if @no_errs
   gputs 'Build Successful'
 else
   rputs 'There were build problems.  Please read scroll.'

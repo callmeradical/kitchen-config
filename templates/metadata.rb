@@ -6,7 +6,6 @@ description 'Installs/Configures COOKBOOK_NAME'
 long_description 'Installs/Configures COOKBOOK_NAME'
 version '0.0.1'
 
-
 supports 'redhat'
 supports 'amazon'
 

@@ -34,7 +34,7 @@ def default_chef_run(&block)
   ChefSpec::ServerRunner.new do |node|
     ## allow the runner to be configured like it would normally by calling any
     ## passed in block.
-    block.call node unless block.nil?
+    yield node unless block.nil?
   end.converge described_recipe
 end
 at_exit { ChefSpec::Coverage.report! }

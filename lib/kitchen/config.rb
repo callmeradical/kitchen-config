@@ -1,3 +1,4 @@
+# Primary module for this gem, uses method missing to read shared config file.
 require 'kitchen/config/version'
 
 module Kitchen
