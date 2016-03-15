@@ -1,0 +1,5 @@
+---
+:key_id: 'your_key_here'
+:tester_ami: 'your_ami_here'
+:tester_flavor_id: 'your_instance_size'
+:region: 'your_region'
