@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Kitchen::Config do
+RSpec.describe Kitchen::Pantry do
   context 'A Valid Kitchen Config' do
     mimic_config = {
       key_id: 'super_secret_key',
@@ -13,11 +13,11 @@ RSpec.describe Kitchen::Config do
     user = 'Derp'
     os = 'DerpOS'
 
-    let(:subj) { Kitchen::Config }
+    let(:subj) { Kitchen::Pantry }
     subject { subj }
     before :each do
       config = File.expand_path(__FILE__)
-      ENV['KITCHEN_CONFIG'] = "#{config}/config.yml"
+      ENV['KITCHEN_PANTRY'] = "#{config}/config.yml"
       subj.instance_variable_set('@config', mimic_config)
     end
 
@@ -29,7 +29,7 @@ RSpec.describe Kitchen::Config do
     end
 
     describe '#load_config' do
-      let(:method) { subj.load_config(ENV['KITCHEN_CONFIG']) }
+      let(:method) { subj.load_config(ENV['KITCHEN_PANTRY']) }
       it { expect(subj).to respond_to(:load_config) }
     end
 
@@ -49,9 +49,9 @@ RSpec.describe Kitchen::Config do
     end
   end
 
-  context 'An INVALID Kitchen Config' do
-    let(:subj) { Kitchen::Config }
-    describe 'if KITCHEN_CONFIG is not valid' do
+  context 'An INVALID Kitchen Pantry' do
+    let(:subj) { Kitchen::Pantry }
+    describe 'if KITCHEN_PANTRY is not valid' do
       it 'it raises an exception' do
         expect { subj.load_config(nil) }.to raise_error /ArguementError/
       end

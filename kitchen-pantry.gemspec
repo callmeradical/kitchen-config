@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'kitchen/config/version'
+require 'kitchen/pantry/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'kitchen-config'
-  spec.version       = Kitchen::Config::VERSION
+  spec.version       = Kitchen::Pantry::VERSION
   spec.authors       = ['craig monson', 'lars cromley']
   spec.email         = ['craig@malachiarts.com', 'lars@callmeradical.com']
   spec.summary       = 'Basic gem for cookbook config and init.'
