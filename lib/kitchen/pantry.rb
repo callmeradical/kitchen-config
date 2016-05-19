@@ -1,8 +1,8 @@
 # Primary module for this gem, uses method missing to read shared config file.
-require 'kitchen/config/version'
+require 'kitchen/pantry/version'
 
 module Kitchen
-  module Config
+  module Pantry
     require 'yaml'
 
     @config = nil

@@ -1,9 +1,10 @@
 [![Build Status](https://travis-ci.org/callmeradical/kitchen-config.svg?branch=master)](https://travis-ci.org/callmeradical/kitchen-config)
 [![Code Climate](https://codeclimate.com/github/callmeradical/kitchen-config/badges/gpa.svg)](https://codeclimate.com/github/callmeradical/kitchen-config)
 [![Test Coverage](https://codeclimate.com/github/callmeradical/kitchen-config/badges/coverage.svg)](https://codeclimate.com/github/callmeradical/kitchen-config/coverage)
-# Kitchen::Config
+# Kitchen::Pantry
 
-Kitchen::Config handles initializing a new cookbook and provides an easy way to configure your kitchen.yml variables across all your projects.
+Kitchen::Pantry handles initializing a new cookbook and provides an easy way to
+configure your kitchen.yml variables across all your projects.
 
 ## Usage
 
@@ -12,21 +13,23 @@ To use kitchen-config add this to your Gemfile:
 gem 'kitchen-config'
 ```
 
-Once you have added this to your project you create a config.yml in the location of your choice and set an environment variable called KITCHEN_CONFIG.
+Once you have added this to your project you create a config.yml in the
+location of your choice and set an environment variable called KITCHEN_PANTRY
+where you'll keep it.
 
 ```bash
 $ mkdir ~/.kitchen
 $ touch ~/.kitchen/config.yml
-$ export KITCHEN_CONFIG=$HOME/.kitchen/config.yml
+$ export KITCHEN_PANTRY=$HOME/.kitchen/config.yml
 ```
 
 
 
-Once you have created the file and set your environment variable you can start creating keys in your config to standardize your config options.
+Once you have created the file and set your environment variable you can start
+creating keys in your config to standardize your config options.
 
 Example config.yml
 
-
 
 ```yaml
 ---
@@ -39,11 +42,12 @@ Example config.yml
 
 
 
-Once your kitchen-config is set-up you may now include kitchen-config in your .kitchen.yml file:
+Once your kitchen-pantry is set-up you may now include kitchen-pantry in your
+.kitchen.yml file:
 
 ```yaml
-<% require 'kitchen/config' %>
-<% config = Kitchen::Config %>
+<% require 'kitchen/pantry' %>
+<% config = Kitchen::Pantry %>
 <% user = "#{`git config --get user.name`.chomp}" %>
 ---
 settings:
@@ -80,6 +84,5 @@ suites:
     run_list:
       - recipe[kitchen_config_test::test]
 ```
-
 
 
